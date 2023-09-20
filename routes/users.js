@@ -72,9 +72,7 @@ router.get("/profile", async (req, res) => {
 router.get("/all-students", async (req, res) => {
   try {
     const allUsers = await User.find({ admin: false });
-    // return res.status(200).json({result : true, allUsers : allUser})
-
-    return res.status(200).json({ result: true, allUsers: a });
+    return res.status(200).json({result : true, allUsers : allUser})
   } catch {
     return res.status(500).json({ result: false, error: "Erreur lors de la récupération des élèves." });
   }
