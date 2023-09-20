@@ -29,23 +29,23 @@ router.post("/addCours", async (req, res) => {
   }
 });
 
-router.get("/mesCours"), async (req, res) => {
-  try {
-    const today = new Date();
-    const userId = req.query.userUid;
-    const allCours = await Cours.find({ students: userId });
+// router.get("/mesCours"), async (req, res) => {
+//   try {
+//     const today = new Date();
+//     const userId = req.query.userUid;
+//     const allCours = await Cours.find({ students: userId });
 
-    console.log(allCours)
-    const coursTodayAndBefore = allCours.filter((cours) => {
+//     console.log(allCours)
+//     const coursTodayAndBefore = allCours.filter((cours) => {
 
-    })
-  } catch (err) {
-    console.log(err)
-  }
+//     })
+//   } catch (err) {
+//     console.log(err)
+//   }
 
 
-    // return res.json({ result: true, cours: coursOfTodayAndBefore });
-  };
+//     // return res.json({ result: true, cours: coursOfTodayAndBefore });
+//   };
 
 router.post("/présent"), async (req, res) => {
     try {
