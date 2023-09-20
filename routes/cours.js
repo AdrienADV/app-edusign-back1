@@ -6,8 +6,8 @@ const Cours = require("../models/cours");
 const User = require("../models/users");
 
 router.post("/addCours", async (req, res) => {
-  const { start, end, intervenant, descritpion, students } = req.body;
-  if (!start || !end || !intervenant || !Descritpion || !students) {
+  const { start, end, intervenant, description, students } = req.body;
+  if (!start || !end || !intervenant || !description || !students) {
     return res.status(404).json({ result: false, error: "il manque 1 ou plusieurs champs" });
   }
 
