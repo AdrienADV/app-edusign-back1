@@ -6,7 +6,7 @@ const Cours = require("../models/cours");
 const User = require("../models/users");
 
 router.post("/create", async (req, res) => {
-  const { start, end, intervenant, description, students, salle } = req.body;
+  const { start, end, intervenant, description, students, salle, titre } = req.body;
   if (!start || !end || !intervenant || !description || !students || !salle) {
     return res.status(404).json({ result: false, error: "il manque 1 ou plusieurs champs" });
   }
@@ -15,6 +15,7 @@ router.post("/create", async (req, res) => {
     start: start,
     end: end,
     intervenant: intervenant, // à envoyer { id, username }
+    titre : titre, 
     salle: salle,
     description: description,
     students: students,

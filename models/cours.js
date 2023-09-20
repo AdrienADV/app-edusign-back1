@@ -4,6 +4,7 @@ const coursSchema = mongoose.Schema({
   start: Date,
   end: Date,
   intervenant: String,
+  titre : String,
   description : String,
   salle : String,
   students: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
