@@ -6,7 +6,7 @@ const Cours = require("../models/cours");
 const User = require("../models/users");
 
 router.post("/addCours", async (req, res) => {
-  const { start, end, intervenant, Descritpion, students } = req.body;
+  const { start, end, intervenant, descritpion, students } = req.body;
   if (!start || !end || !intervenant || !Descritpion || !students) {
     return res.status(404).json({ result: false, error: "il manque 1 ou plusieurs champs" });
   }
@@ -15,7 +15,7 @@ router.post("/addCours", async (req, res) => {
     start: start,
     end: end,
     intervenant: intervenant, // à envoyer { id, username }
-    Descritpion: Descritpion,
+    descritpion: descritpion,
     students: students,
     presents: [],
   });
@@ -29,14 +29,42 @@ router.post("/addCours", async (req, res) => {
   }
 });
 
-router.get("/todayCours"),
-  async (req, res) => {
+router.get("/mesCours"), async (req, res) => {
+  try {
     const today = new Date();
-    const userId = req.query.uid;
-    const todayCours = await Cours.find({ students: userId });
-    const coursOfToday = todayCours.filter((cours) => isSameDay(cours.start, today));
+    const userId = req.query.userUid;
+    const allCours = await Cours.find({ students: userId });
 
-    return res.json({ result: true, coursOfToday: todayCours });
+    console.log(allCours)
+    const coursTodayAndBefore = allCours.filter((cours) => {
+
+    })
+  } catch (err) {
+    console.log(err)
+  }
+
+
+    // return res.json({ result: true, cours: coursOfTodayAndBefore });
+  };
+
+router.post("/présent"), async (req, res) => {
+    try {
+      const { userId, coursId } = req.body;
+      const user = await User.findById(userId);
+      const cours = await Cours.findById(coursId);
+      if (!user || !cours) {
+        return res.status(404).json({ message: "Utilisateur OU cours introuvable." });
+      }
+      cours.presents.push(user._id);
+      await cours.save();
+
+      return res.status(200).json({ result: true, message: "L'élève à été ajouté avec succès !" });
+    } catch {
+      return res.status(500).json({
+        message:
+          "Une erreur est survenue lors de l'ajout de l'utilisateur à la liste des présents.",
+      });
+    }
   };
 
 module.exports = router;
