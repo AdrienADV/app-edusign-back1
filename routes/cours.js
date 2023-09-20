@@ -15,7 +15,7 @@ router.post("/create", async (req, res) => {
     start: start,
     end: end,
     intervenant: intervenant, // à envoyer { id, username }
-    titre : titre, 
+    titre: titre,
     salle: salle,
     description: description,
     students: students,
@@ -59,20 +59,23 @@ router.post("/present", async (req, res) => {
     await cours.save();
     return res.status(200).json({ result: true, message: "L'élève à été ajouté avec succès !" });
   } catch {
-    return res.status(500).json({ result: false, message: "Une erreur est survenue lors de l'ajout de l'utilisateur à la liste des présents."});
+    return res.status(500).json({
+      result: false,
+      message: "Une erreur est survenue lors de l'ajout de l'utilisateur à la liste des présents.",
+    });
   }
 });
 
-
-
-
-
-
-
-
-
-
-
+router.get("/cours-details", async (req, res) => {
+  const coursUid = req.query.coursUid;
+  try {
+    const coursDetails = await Cours.findOne({ _id: coursUid });
+    return res.status(200).json({ result: true, coursDetails });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ result: false, message: "ERREUR RECHERCHE" });
+  }
+});
 
 /////////////  /////////////  /////////////  /////////////  /////////////  /////////////  /////////////  /////////////  /////////////
 
