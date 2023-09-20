@@ -6,6 +6,7 @@ const coursSchema = mongoose.Schema({
   intervenant: String,
   Descritpion : String,
   students: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
+  presents : [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }]
 });
 
 const Cours = mongoose.model("cours", coursSchema);

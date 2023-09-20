@@ -14,9 +14,10 @@ router.post("/addCours", async (req, res) => {
   const newCours = new Cours({
     start: start,
     end: end,
-    intervenant: intervenant, // à envoyer {username, id}
+    intervenant: intervenant, // à envoyer { id, username }
     Descritpion: Descritpion,
     students: students,
+    presents: [],
   });
 
   try {
@@ -28,7 +29,8 @@ router.post("/addCours", async (req, res) => {
   }
 });
 
-router.get("/todayCours"), async (req, res) => {
+router.get("/todayCours"),
+  async (req, res) => {
     const today = new Date();
     const userId = req.query.uid;
     const todayCours = await Cours.find({ students: userId });
