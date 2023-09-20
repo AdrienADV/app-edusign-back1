@@ -4,7 +4,7 @@ const coursSchema = mongoose.Schema({
   start: Date,
   end: Date,
   intervenant: String,
-  Descritpion : String,
+  descritpion : String,
   students: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
   presents : [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }]
 });
