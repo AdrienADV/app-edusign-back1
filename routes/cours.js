@@ -6,7 +6,7 @@ const Cours = require("../models/cours");
 const User = require("../models/users");
 
 router.post("/create", async (req, res) => {
-  const { start, end, intervenant, description, students, salle, titre } = req.body;
+  const { start, end, intervenant, description, students, salle, titre, intervenantId } = req.body;
   if (!start || !end || !intervenant || !description || !students || !salle) {
     return res.status(404).json({ result: false, error: "il manque 1 ou plusieurs champs" });
   }
@@ -14,7 +14,8 @@ router.post("/create", async (req, res) => {
   const newCours = new Cours({
     start: start,
     end: end,
-    intervenant: intervenant, // à envoyer { id, username }
+    intervenant: intervenant,
+    intervenantId : intervenantId,
     titre: titre,
     salle: salle,
     description: description,
@@ -76,6 +77,19 @@ router.get("/cours-details", async (req, res) => {
     return res.status(500).json({ result: false, message: "ERREUR RECHERCHE" });
   }
 });
+
+router.get("/mes-cours-admin", async (req, res) => {
+  const uid = req.query.adminUid
+  try {
+    const allMyCours = await Cours.find({ intervenantId: uid });
+    return res.status(200).json({ result: true, allMyCours : allMyCours});
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ result: false, message: "ERREUR RECHERCHE" });
+  }
+});
+
+
 
 /////////////  /////////////  /////////////  /////////////  /////////////  /////////////  /////////////  /////////////  /////////////
 
