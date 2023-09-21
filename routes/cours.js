@@ -56,6 +56,7 @@ router.post("/present", async (req, res) => {
     if (!user || !cours) {
       return res.status(404).json({ message: "Utilisateur OU cours introuvable." });
     }
+
     if (cours.presents.includes(userId)) {
       return res.status(400).json({ message: "L'utilisateur est déjà présent." });
     }
