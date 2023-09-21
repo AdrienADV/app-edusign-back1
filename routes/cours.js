@@ -15,7 +15,7 @@ router.post("/create", async (req, res) => {
     start: start,
     end: end,
     intervenant: intervenant,
-    intervenantId : intervenantId,
+    intervenantId: intervenantId,
     titre: titre,
     salle: salle,
     description: description,
@@ -56,6 +56,9 @@ router.post("/present", async (req, res) => {
     if (!user || !cours) {
       return res.status(404).json({ message: "Utilisateur OU cours introuvable." });
     }
+    if (cours.presents.includes(userId)) {
+      return res.status(400).json({ message: "L'utilisateur est déjà présent." });
+    }
     cours.presents.push(user._id);
     await cours.save();
     return res.status(200).json({ result: true, message: "L'élève à été ajouté avec succès !" });
@@ -79,17 +82,15 @@ router.get("/cours-details", async (req, res) => {
 });
 
 router.get("/mes-cours-admin", async (req, res) => {
-  const uid = req.query.adminUid
+  const uid = req.query.adminUid;
   try {
     const allMyCours = await Cours.find({ intervenantId: uid });
-    return res.status(200).json({ result: true, allMyCours : allMyCours});
+    return res.status(200).json({ result: true, allMyCours: allMyCours });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ result: false, message: "ERREUR RECHERCHE" });
   }
 });
-
-
 
 /////////////  /////////////  /////////////  /////////////  /////////////  /////////////  /////////////  /////////////  /////////////
 
