@@ -49,28 +49,28 @@ router.get("/mes-cours-students", async (req, res) => {
   }
 });
 
-router.post("/present", async (req, res) => {
-  try {
-    const { userId, coursId } = req.body;
-    const user = await User.findById(userId);
-    const cours = await Cours.findById(coursId);
-    if (!user || !cours) {
-      return res.status(404).json({ message: "Utilisateur OU cours introuvable." });
-    }
+// router.post("/present", async (req, res) => {
+//   try {
+//     const { userId, coursId } = req.body;
+//     const user = await User.findById(userId);
+//     const cours = await Cours.findById(coursId);
+//     if (!user || !cours) {
+//       return res.status(404).json({ message: "Utilisateur OU cours introuvable." });
+//     }
 
-    if (cours.presents.includes(userId)) {
-      return res.status(400).json({ message: "L'utilisateur est déjà présent." });
-    }
-    cours.presents.push(user._id);
-    await cours.save();
-    return res.status(200).json({ result: true, message: "L'élève à été ajouté avec succès !" });
-  } catch {
-    return res.status(500).json({
-      result: false,
-      message: "Une erreur est survenue lors de l'ajout de l'utilisateur à la liste des présents.",
-    });
-  }
-});
+//     if (cours.presents.includes(userId)) {
+//       return res.status(400).json({ message: "L'utilisateur est déjà présent." });
+//     }
+//     cours.presents.push(user._id);
+//     await cours.save();
+//     return res.status(200).json({ result: true, message: "L'élève à été ajouté avec succès !" });
+//   } catch {
+//     return res.status(500).json({
+//       result: false,
+//       message: "Une erreur est survenue lors de l'ajout de l'utilisateur à la liste des présents.",
+//     });
+//   }
+// });
 
 router.get("/cours-details", async (req, res) => {
   const coursUid = req.query.coursUid;
@@ -125,7 +125,7 @@ router.get("/qr-code-generator", async (req, res) => {
   try {
     const uid = req.query.coursUid;
     const idToEncrypt = uid;
-    const expirationDateToEncrypt = Date.now() + 30 * 1000;
+    const expirationDateToEncrypt = Date.now() + 10 * 1000;
     const { encryptedId, encryptedExpirationDate } = encryptIdAndExpirationDate(
       idToEncrypt,
       expirationDateToEncrypt
@@ -143,11 +143,11 @@ router.post("/qr-code-scan", async (req, res) => {
     const decryptedIdCours = decryptData(encryptedId);
     const decryptedExpirationDate = decryptData(encryptedExpirationDate);
 
-    const data = {
-      idcours: decryptedIdCours,
-      decryptedExpirationDate: decryptedExpirationDate,
-      userId: userId,
-    };
+    // const data = {
+    //   idcours: decryptedIdCours,
+    //   decryptedExpirationDate: decryptedExpirationDate,
+    //   userId: userId,
+    // };
     const dateEnMillisecondes = decryptedExpirationDate;
     const date = new Date(dateEnMillisecondes);
     const aujourdHui = new Date();
@@ -158,7 +158,7 @@ router.post("/qr-code-scan", async (req, res) => {
       const user = await User.findById(userId);
       const cours = await Cours.findById(decryptedIdCours);
       if (!user || !cours) {
-        return res.status(404).json({ message: "Utilisateur OU cours introuvable." });
+        return res.status(400).json({ message: "Utilisateur OU cours introuvable." });
       }
       if (cours.presents.includes(userId)) {
         return res.status(400).json({ message: "L'utilisateur est déjà présent." });
