@@ -172,22 +172,4 @@ router.post("/qr-code-scan", async (req, res) => {
   }
 });
 
-// router.delete("/delete-all-cours", async (req, res) => {
-//   try {
-//     const result = await User.updateMany({ admin: false }, { $set: { cours: [] } });
-//     if (result.nModified > 0) {
-//       return res.status(200).json({
-//         message: "Les cours ont été supprimés de tous les utilisateurs non-admin avec succès.",
-//       });
-//     } else {
-//       return res
-//         .status(404)
-//         .json({ message: "Aucun utilisateur non-admin trouvé pour supprimer les cours." });
-//     }
-//   } catch (err) {
-//     console.error(err);
-//     return res.status(500).json({ message: "Erreur suppression des cours." });
-//   }
-// });
-
 module.exports = router;
